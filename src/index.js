@@ -29,6 +29,7 @@ app.get('/actualizarProducto', function (req, res) {
 
 //localhost:4200/producto/
 app.use("/producto", require("./api/producto/producto"));
-
+app.use("/venta", require("./api/venta/venta"));
+app.use("/cierre", require("./api/cierre/cierre"));
  
 //inicio de servicio

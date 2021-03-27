@@ -17,9 +17,14 @@ async function CrearProductos(postData) {
     let response = {};
     try {
         
-        let sql = 'INSERT INTO productos (`descripcion` , `costo` , activo, `idCatTipoProducto`)values ("'+postData.descripcion+'",'+postData.costo+', 1, '+postData.tipoProducto+')';
-        response = { "estatus" : 200 , "mensaje": "Producto agregado exitosamente"}
-        let result = await db.query(sql);
+        let sql = 'call SP_GUARDA_ACTUALIZA_PRODUCTO(?,?,?,?)';
+        let result = await db.query(sql,[
+            postData.idProducto,
+            postData.descripcion,
+            postData.costo,
+            postData.idTipoProducto,
+        ]);
+        response = JSON.parse(JSON.stringify(result[0][0]));
     } catch (ex) {
          response = {"estatus": -1 , "mensaje": "Ocurrio un error al agregar el producto"}
          console.log("error" , ex)
@@ -30,10 +35,15 @@ async function CrearProductos(postData) {
 async function ObtenerTipoProductos(postData) {
     let response = {};
     try {
-        
-        let sql = 'SELECT * FROM cat_tipo_producto';
+        let sql = 'call SP_OBTENER_TIPOS_PRODUCTO()';
+        //let sql = 'SELECT * FROM cat_tipo_producto';
         let result = await db.query(sql);
-        response = JSON.parse(JSON.stringify(result));
+        
+        response = JSON.parse(JSON.stringify(result[0][0]));
+        if(response.estatus == 200){
+            response.modelo = JSON.parse(JSON.stringify(result[1]));
+        }
+        return response;
     } catch (ex) {
          response = {"estatus": -1 , "mensaje": "Ocurrio un error al agregar el producto"}
          console.log("error" , ex)
