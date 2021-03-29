@@ -31,5 +31,6 @@ app.get('/actualizarProducto', function (req, res) {
 app.use("/producto", require("./api/producto/producto"));
 app.use("/venta", require("./api/venta/venta"));
 app.use("/cierre", require("./api/cierre/cierre"));
+app.use("/login", require("./api/login/login"));
  
 //inicio de servicio
